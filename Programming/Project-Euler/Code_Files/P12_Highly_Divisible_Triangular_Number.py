@@ -1,20 +1,35 @@
-def triangle(n):
-    return n * (n+1) // 2
+import math
 
 def count_divisors(n):
-    count = 0
-    for i in range(1,int((n**0.5) + 1)):
-        if n % i == 0:
-            count += 2 if i != n // i else 1
+    count = 1
+    i = 2
+    while i * i <= n:
+        power = 0
+        while n % i == 0:
+            n //= i
+            power += 1
+        count *= (power + 1)
+        i += 1
+    if n > 1:
+        count *= 2
     return count
 
-n = 1
-while True:
-    t = triangle(n)
-    if count_divisors(t) > 500:
-        print(t)
-        break
-    n += 1
+def triangle_with_divisors(limit):
+    n = 1
+    while True:
+        if n % 2 == 0:
+            d1 = count_divisors(n // 2)
+            d2 = count_divisors(n + 1)
+        else:
+            d1 = count_divisors(n)
+            d2 = count_divisors((n + 1) // 2)
+        
+        if d1 * d2 > limit:
+            return n * (n + 1) // 2
+        n += 1
+
+print(triangle_with_divisors(500))
+
 
             
             
