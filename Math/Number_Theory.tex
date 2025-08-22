@@ -1,0 +1,30 @@
+\documentclass[12pt]{article}
+\input{preamble.tex}
+\begin{document}
+\title{Number Theory}
+\author{Avid David}
+\date{\today}
+\maketitle
+\tableofcontents
+\newpage
+\part{Elementary Number Theory}
+\section{Preliminaries}
+\subsection{Mathematical Induction}
+This hinges on the Well Ordering Principle:
+\begin{concept}
+    \textbf{Well Ordering Principle:} Every nonempty set $S$ of nonnegative integers contains a least element that is, there is some integer $a$ in $S$ such that $a \leq b$ for all $b$'s belonging to $S$.
+\end{concept}
+With a clever set construction, we can prove the \textbf{Archimedean property}: If $a$ and $b$ are any positive integers, then there exists a positive integer $n$ such that $na \geq b$.
+\par Now to the main character. We present the First Principle of Finite Induction:
+\begin{concept}
+    \textbf{First Principle of Finite Induction:} Let $S \subseteq \mathbb{Z}_{>0}$ with the following properties:
+    \begin{itemize}
+        \item $1 \in S$
+        \item If $k \in S$ then $k+1 \in S$.
+    \end{itemize}
+    Then $S = \mathbb{Z}_{>0}$
+\end{concept}
+This is also called weak induction. Sometimes we need strong induction, which is the Second Principle of Finite Induction. The problem statement stays the same, but the second condition changes to "If $1,2,3,\ldots,k \in S$ then $k+1 \in S$."
+\par These two forms can be generalised to start with any starting positive integer $n_0$. Then, in a problem, we'll have to verify the base case, assume it's true with $n_0$, and prove the inductive step.
+
+\end{document}
