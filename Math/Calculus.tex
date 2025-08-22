@@ -1,0 +1,472 @@
+\documentclass[12pt]{article}
+\input{preamble.tex}
+\begin{document}
+\title{Calculus}
+\author{Avid David}
+\date{\today}
+\maketitle
+\tableofcontents
+\newpage
+\part{Integral Calculus in One Variable}
+\section{Indefinite Integrals}
+\subsection{Integral of a function}
+The integral is the inverse of the derivative operator. Given a function $f(x)$, we can find a function $F(x)$ such that $F'(x) = f(x)$. The integral of a function is not unique, as for each $f(x)$, $F(x) + C$ is also an integral of that function.
+\begin{concept}
+    Both the derivative and the integral are linear operators, so we have:
+    \begin{equation*}
+        \int [\alpha f(x) + \beta g(x) ]\dd x = \alpha \int f(x)\dd x + \beta \int g(x) \dd x
+    \end{equation*}
+\end{concept}
+
+\subsection{Ways to calculate indefinite integrals}
+\begin{enumerate}
+    \item \textbf{Expansion} 
+    \par We use the linearity rule to turn a complicated integral into the sum of many simpler ones, then calculate one by one. 
+    \item \textbf{Changing the differential expression ($u$-substitution)}
+\par If $\mathlarger{\int f(x) \dd x = F(x) + C}$ then $\mathlarger{\int f(u) \dd x = F(u) + C}$, where $u = u(x)$ is a continuously differentiable function. Then, we can change the integrand $g(x)\dd x$ into:
+\begin{equation*}
+    g(x) = f(u(x))u'(x) \dd x
+\end{equation*}
+Then the integral turns into:
+\begin{equation*}
+    \int g(x) \dd x = \int f(u(x))u'(x) \dd x = \int f(u(x)) \dd u = F(u) + C
+\end{equation*}
+\begin{insight}
+    In the simple case $u = ax+b$, we have $\dd u = a \dd x$. Then if $\mathlarger{\int f(x) \dd x = F(x) + C}$ then:
+    \begin{equation*}
+        \int f(ax+b) \dd x  = \dfrac{1}{a} F(ax+b) +C
+    \end{equation*}
+\end{insight}
+    \item \textbf{Change of variables}
+Consider the integral $\mathlarger{I = \int f(x) \dd x}$, where $f(x)$ is a continuous function. We can change $f(x)$ such that we work with functions with known or easier antiderivatives:
+\begin{enumerate}
+    \item \textbf{Change of variables type 1:}
+    \par Let $x = \varphi(t)$, where $\varphi(t)$ is a monotonic and continuously differentiable function. Then:
+    \begin{equation*}
+        I = \int f(x) \dd x = \int f[\varphi(t)]\varphi'(t) \dd t
+    \end{equation*}
+    Denote the antiderivative of $g(t) = f[\varphi(t)]\varphi'(t)$ as $G(t)$ and $h(x)$ as the inverse of $x = \varphi (t)$, we then have:
+    \begin{equation*}
+        \int g(t) \dd t = G(t) + C \Rightarrow I = G[h(x)] + C
+    \end{equation*}
+
+    \item \textbf{Change of variables type 2:}
+    \par Let $t = \psi(x)$, where $\psi(x)$ is a continuously differentiable function and we can write $f(x) = g[\psi(x)]\psi ' (x)$. Then:
+    \begin{equation*}
+         I = \int f(x) \dd x = \int g[\psi(x)]\psi'(x) \dd x
+    \end{equation*}
+    \par Denote the antiderivative of $g(t)$ as $G(t)$, then:
+    \begin{equation*}
+        I = G[\psi(x)] + C
+    \end{equation*}
+    \begin{important}
+        Remember to change back to the original variable!
+    \end{important}
+\end{enumerate}
+    \item \textbf{Integration by parts}
+    Let $u = u(x)$ and $v = v(x)$ be continuously differentiable functions. We know:
+    \begin{equation*}
+        \dd (uv) = u \dd v + v \dd u \Rightarrow \int \dd (uv) = \int u \dd v + v \dd u
+    \end{equation*}
+    Then we have the following formula:
+    \begin{equation*}
+        \int u \dd v = uv - \int v \dd u
+    \end{equation*}
+    Consider the integral $I = \mathlarger{\int f(x) \dd x}$ We need to express:
+    \begin{equation*}
+        f(x) \dd x = [g(x)h(x)]\dd x = g(x) [h(x) \dd x] = u \dd v
+    \end{equation*}
+    then apply the integration by parts formula to $u = g(x)$, $v = \mathlarger{h(x) \dd x}$
+\end{enumerate}
+
+
+
+
+    \subsection{Integral of rational functions}
+    \par A rational function is one with the form $f(x) = \dfrac{P(x)}{Q(x)}$, where $P(x)$ and $Q(x)$ are polynomials in $x$. If $\deg P(x) < \deg Q(x)$ then it's called a \emph{true rational function.}
+    \par Using polynomial division, we can rewrite any rational function:
+    \begin{equation*}
+        f(x) = H(x) + \dfrac{r(x)}{Q(x)}
+    \end{equation*}
+    \par The integral of $H(x)$ can easily be computed. As for the true rational function $\dfrac{r(x)}{Q(x)}$, we will use partial fractions to decompose it into four simpler types of functions. First, using the method of Undetermined Coefficients, we can write $Q(x)$ as the product of linear polynomials and quadratic polynomials with no real roots:
+    \begin{equation*}
+        Q(x) = \prod_{k = 1}^{n}(x-a_k)^{\alpha_k} \prod_{k=1}^{n}(x^2+p_kx + q_k)^{\beta_k}
+    \end{equation*}
+    Note that this can always be achieved as per the Fundamental Theorem of Algebra. Then, we just need to compute the following four types of integrals:
+    \begin{insight}
+        \begin{enumerate}
+            \item $\mathlarger{\int \dfrac{A}{x-a} \dd x}$
+            \item $\mathlarger{\int \dfrac{A}{(x-a)^k} \dd x} \quad (k \geq 2)$
+            \item $\mathlarger{\int \dfrac{Mx+N}{x^2 + px + q}\dd x}$
+            \item $\mathlarger{\int \dfrac{Mx+N}{(x^2 + px + q)^m}\dd x \quad (m \geq 2)}$
+        \end{enumerate}
+    \end{insight}
+    \par These integrals cover all cases because any partial fraction decomposition over $\mathbb{R}$ involves repeated linear factors and irreducible quadratic factors, possibly raised to powers. The first two ones are simple:
+    \begin{enumerate}
+        \item $\mathlarger{\int \dfrac{A}{x-a}\dd x = A\ln|x-a| + C}$
+        \item $\mathlarger{\int \dfrac{A}{(x-a)^k}\dd x = A\int (x-a)^{-k} = \dfrac{-A}{(k-1)(x-a)^{k-1}} \quad (k \geq 2)}$
+    \end{enumerate}
+    The third one is a bit more complicated: we need to use a clever substitution, inspired by completing the square, to bring it back to familiar forms:
+    \par Let $a = \sqrt{q-\dfrac{p^2}{4}}$ and $t = x + \dfrac{p}{2}$, the integral becomes:
+    \begin{align*}
+        \int \dfrac{Mx+N}{x^2 + px + q}\dd x & =  \int \dfrac{Mt + (N - \frac{Mp}{2})}{t^2 + a^2} \dd t \\
+        & = M \int \dfrac{t}{t^2 + a^2} \dd t +  \left(N-\frac{Mp}{2} \right) \int \dfrac{1}{t^2 + a^2} \dd t
+    \end{align*}
+    For the first integral, substitute in $u = t^2$ and we have a logarithm. For the second one, divide both the numerator and the denominator by $a^2$ then substitute $u = \dfrac{t}{a}$, we yield the inverse tangent. Then the integral is simply:
+    \begin{equation*}
+        \int \dfrac{Mx+N}{x^2 + px + q}\dd x = \dfrac{M}{2}\ln(x^2 + px+ q) + \dfrac{2N - Mp}{\sqrt{4q-p^2}}\arctan \dfrac{2x+p}{\sqrt{4q -p^2}} + C
+    \end{equation*}
+    \par Before moving on to solve the last integral, let's review a bit of complex numbers:
+    \begin{concept}
+    Some important (and beautiful) formulas::
+        \begin{align*}
+        \textbf{Euler's Formula:}\quad & e^{ix} = \cos x + i \sin x \\
+        \textbf{De Moivre's Formula:} \quad & (\cos x + i\sin x)^n = \cos nx + i \sin nx
+        \end{align*}
+    \end{concept}
+    We will prove it using ODEs. Let $f(x) = e^x$ and $g(x) = \cos x + i \sin x$. We know:
+    \begin{align*}
+        f'(x) & = ie^{ix} = if(x) \\
+        g'(x) & = -\sin x + i\cos x = ig(x)
+    \end{align*}
+    \par And also the initial values:
+    \begin{equation*}
+        f(0) = g(0) = 1
+    \end{equation*}
+    By uniqueness of solutions to first-order linear ODEs, Euler's formula is proven. By substituting $f(nx) = g(nx)$, De Moivre's formula is proven. Then we have:
+    \begin{insight}
+    \begin{itemize}
+        \item $\cos x = \Re(e^{ix}) = \dfrac{e^{ix} + e^{-ix}}{2}$
+        \item $\sin x = \Im(e^{ix}) = \dfrac{e^{ix} + e^{-ix}}{2i}$
+    \end{itemize}
+    \end{insight}
+    From this, we can derive a general formula for powers of the sine and cosine:
+    \begin{equation*}
+        \cos ^n x =  \left(\dfrac{e^{ix}+e^{-ix}}{2}\right) ^n 
+        =  \dfrac{1}{2^n} \sum_{k=0}^{n}\binom{n}{k}e^{i(n-2k)x}
+    \end{equation*}
+    Now if we group $k$ and $n-k$ in pairs to get $\cos(n-2k)$, we get:
+    \begin{equation*}
+        \cos ^n x = \dfrac{1}{2^n} \sum_{k=0}^{n} \binom{n}{k} \cos ((n-2k)x)
+    \end{equation*}
+    Analogously, we also have:
+    \begin{equation*}
+                \sin ^n x = \dfrac{1}{(2i)^n} \sum_{k=0}^{n} \binom{n}{k} (-1)^k \cos (\dfrac{\pi n}{2}-(n-2k)x)
+    \end{equation*}
+    \par Now, back to the fourth integral, we first do the same thing: change variables $a = \sqrt{q-\dfrac{p^2}{4}}$ and $t = x + \dfrac{p}{2}$. This yields:
+    \begin{align*}
+        \int \dfrac{Mx+N}{(x^2 + px + q)^m} \dd t= & \int \dfrac{Mt + (N - \frac{Mp}{2})}{(t^2 + a^2)^m} \dd t \\
+        = & M\int \dfrac{t}{(t^2 + a^2)^m} \dd t + \left(N-\dfrac{Mp}{2}\right) \int \dfrac{1}{(t^2 + a^2)^m} \dd t
+    \end{align*}
+    \par Again, to compute the first integral, we use the substitution $u = t^2$. Then it is:
+    \begin{equation*}
+        M\int \dfrac{t}{(t^2 + a^2)^m} \dd t = \dfrac{-M}{2(m-1)(t^2 + a^2)^{m-1}} +C
+    \end{equation*}
+    \par For the second integral however, this time we need a different substitution. Let $t = a\tan z$. Then: $t^2 +a ^2 = a^2 \sec ^2 z$, and $\dd t = a\sec ^2 \dd z$.
+    Then the integral turns into:
+    \begin{equation*}
+        \int \dfrac{1}{(t^2 + a^2)^m} \dd t = a^{2m-1} \int \cos ^{2m-2} z \dd z
+    \end{equation*}
+    Let $I(z) = \mathlarger{\int \cos ^{2m-2} z \dd z} $and now, we can take advantage of the linearity rule and the formula for powers of cosine we just derived. The integral turns into:
+    \begin{align*}
+        I(z) = & \int \dfrac{1}{2^{2m-2}} \sum_{k=0}^{2m-2} \binom{2m-2}{k}\cos(2(m-k-1)z) \dd z \\
+        = & \dfrac{1}{2^{2m-2}} \sum_{k=0}^{2m-2} \binom{2m-2}{k} \dfrac{1}{2m-2-2k} \sin ( 2(m-k-1)z) +C \\
+        = & \dfrac{1}{2^{2m-2}} \left[ \binom{2m-2}{m-1}z + \sum_{k=0, k\neq m-1}^{2m-2} \binom{2m-2}{k} \dfrac{1}{2m-2-2k} \sin ( 2(m-k-1)z)\right] +C
+    \end{align*}
+    Then the integral, as a whole, evaluates to:
+
+\begin{equation*}
+\int \frac{Mx + N}{(x^2 + px + q)^m} \dd x
+= \frac{-M}{2(m - 1)(x^2 + px + q)^{m - 1}} + \left(N - \frac{Mp}{2} \right) \left( \sqrt{q - \dfrac{p^2}{4}}\right)^{2m-1}\cdot I(z) + C
+\end{equation*}
+\subsection{Integral of trigonometric functions}
+\begin{enumerate}
+    \item \textbf{The general method}
+    \par Consider the integral $\mathlarger{\int f(\sin x, \cos x)\dd x}$, where the integrand is a rational function in terms of $\sin x$ and $\cos x$. We can use the "universal trigonometric substitution" $x = \tan \dfrac{t}{2}$. Then:
+    \begin{equation*}
+        \sin x = \dfrac{2t}{1+t^2}; \quad \cos x = \dfrac{1-t^2}{1+t^2}; \quad \tan x = \dfrac{2t}{1-t^2}; \dd t = \dfrac{2 \dd t}{1 + t^2}
+    \end{equation*}
+    The integrand turns into a rational function in terms of $t$.
+    \item \textbf{Integrals of the form $\mathlarger{\int \sin ^m x \cos ^n x \dd x}$, where $m,n$ are positive integers}
+    \begin{itemize}
+        \item If $m$ is odd, we let $t = \cos x$
+        \item If $n$ is odd, we let $t = \sin x$
+        \item If both $m$ and $n$ are even, we use power-reduction formulae:
+        \begin{equation*}
+            \sin ^2 x = \dfrac{1-\cos 2x}{2}; \quad \quad \cos ^2 x = \dfrac{1+\cos 2x}{2}
+        \end{equation*}
+        \par Then we'll have a similar integral with the form $\mathlarger{\int \sin ^k 2x \cos ^l 2x \dd x}$
+    \end{itemize}
+    \item \textbf{Special forms of $\mathlarger{\int f(\sin x, \cos x) \dd x}$}
+    \begin{itemize}
+        \item Let $t = \cos x$ if $f(-\sin x, \cos x) = - f(\sin x, \cos x)$
+        \item Let $t = \sin x$ if $f(\sin x, -\cos x) = - f(\sin x, \cos x)$
+        \item Let $t = \tan x$ if $f(-\sin x, -\cos x) = f(\sin x, \cos x)$
+    \end{itemize}
+\end{enumerate}
+\subsection{Integral of irrational expressions}
+\par There are two main ways to solve these integrals: using trigonometric substitution, and using the Euler substitution. The trig-sub is very intuitive, but the Euler substitution is also very nice:
+\begin{concept}
+    Let $t = x + \sqrt{x^2 + a}$ for the integral $\mathlarger{\int f(x, \sqrt{x^2 +a}) \dd x}$. Then: 
+    \begin{equation*}
+        \dd t = 1 + \dfrac{x} {\sqrt{x^2 + a}} \dd x = \dfrac{x + \sqrt{x^2 +a }} {\sqrt{x^2 +a}} \dd x \Rightarrow \dfrac{\dd t}{t} = \dfrac{\dd x}{\sqrt{x^2 + a}}
+    \end{equation*}
+\end{concept}
+\begin{important}
+    \textbf{A special integral:}
+    \begin{equation*}
+        I   = \int \dfrac{\dd x}{\sqrt[n]{x}-1} 
+    \end{equation*}
+    \par Let $u = \sqrt[n]{x}$. Then $\dd x = n u^{n-1} \dd u$
+    \begin{align*}
+        I &= n \int \dfrac{u^{n-1}}{u-1}\dd u \\
+        &= n \int \dfrac{u^{n-1} - 1}{u-1} + \dfrac{1}{u-1} \dd u \\
+        &= n \int \sum_{k=0}^{n-2}u^k + \dfrac{1}{u-1}\dd u \\
+        & = n\left(\sum_{k=1}^{n-1} \dfrac{u^k}{k} + \ln{|u-1|} \right) + C \\
+        & = n\left(\sum_{k=1}^{n-1} \dfrac{\sqrt[n]{x^k}}{k} + \ln{|\sqrt[n]{x}-1|} \right) + C
+    \end{align*}
+\end{important}
+\section{Definite Integrals}
+\subsection{Definition}
+Say $f(x)$ is defined and bounded on $[a,b]$. Partition $[a,b]$ into $n$ subintervals $[x_i, x_{i+1}]$ where $a = x_0 < x_1 < \ldots < x_n = b$. In each interval $[x_i,x_{i+1}]$, we choose a point $\xi \in [x_i, x_{i+1}]$ and form the expression
+\begin{equation*}
+    S_n = \sum_{i=0}^{n-1}f(\xi_i) \Delta x_i
+\end{equation*}
+where $\Delta x_i = x_{i+1} - x_i$. Here, $S_n$ is the Riemann sum. Denote $\lambda = \mathlarger{\max_{1 \leq i \leq n}} \Delta x_i$. If there exists the limit $I = \mathlarger{\lim_{\lambda \rightarrow 0} S_n}$ that doesn't depend on how we partition $[a,b]$ and how we choose $\xi_i$ then $I$ is called the definite integral of the function $f(x)$ on $[a,b]$, denoted $\mathlarger{\int_a ^bf(x) \dd x}$. Then we say $f(x)$ is integrable on $[a,b]$.
+\par We then have defined the definite integral for all $a<b$. We can then define, if $b<a$, $\mathlarger{\int_a ^bf(x) \dd x = - \int_b ^af(x) \dd x}$ and when $a = b$, $\mathlarger{\int_a ^bf(x) \dd x = 0}$.
+\subsection{Riemann Integrability}
+The sufficient and necessary condition for a bounded function $f(x)$ to be integrable on $[a,b]$ is $\mathlarger{\lim_{\lambda \rightarrow0}(S-s)=0}$, where:
+\begin{align*}
+    S = & \sum_{i=1}^{n+1} M_i \Delta x_i \quad \quad \quad \quad \quad \hspace{10pt} s = \sum_{i=1}^{n+1} m_i \Delta x_i \\
+    M_i = & \sup_{x \in [x_i, x_{i+1}]} f(x) \quad \quad \quad \quad m_i =  \inf_{x \in [x_i, x_{i+1}]} f(x)
+\end{align*}
+From there, we have a few crucial theorems:
+\begin{concept}
+    \begin{itemize}
+        \item If $f(x)$ is continuous on $[a,b]$ then it is integrable on $[a,b]$.
+        \item If $f(x)$ is bounded on $[a,b]$ and has discontinuities on $[a,b]$ then it is integrable on $[a,b]$
+        \item If $f(x)$ is bounded and monotonic on $[a,b]$ then it is integrable on $[a,b]$
+    \end{itemize}
+\end{concept}
+\subsection{Properties of the Definite Integral}
+\begin{enumerate}
+    \item \textbf{Property 1 (Linearity:)}
+    \begin{equation*}
+        \int_a^b [\alpha f(x) + \beta g(x)]\dd x = \alpha \int_a^b f(x) \dd x + \beta \int_a^b g(x) \dd x
+    \end{equation*}
+    \item \textbf{Property 2:} Given three closed intervals $[a,b],[b,c],[a,c]$, if $f(x)$ is integrable on the longest interval then it is also integrable on the other two integrals, and:
+    \begin{equation*}
+        \int_a^b f(x) \dd x = \int_a^c f(x) \dd x + \int_c^b f(x) \dd x
+    \end{equation*}
+    \item \textbf{Property 3:} Suppose $a<b$. Then:
+    \begin{enumerate}
+        \item If $f(x) \geq 0 \ \forall \ x \in [a,b]$ then $\mathlarger{\int_a^b f(x) \dd x \geq 0}$
+        \item If $f(x) \geq g(x) \ \forall \ x \in [a,b]$ then $\mathlarger{\int_a^b f(x) \dd x \geq \int_a^b g(x) \dd x}$
+        \item If $f(x)$ is integrable on $[a,b]$ then $|f(x)|$ is integrable on $[a,b]$ and:
+        \begin{equation*}
+            \left| \int_a^b f(x) \dd x \right| \leq \int_a^b |f(x)| \dd x
+        \end{equation*}
+        \item If $m \leq f(x) \leq M \ \forall \ x \in [a,b]$ then:
+        \begin{equation*}
+            m(b-a) \leq \int_a^b f(x) \dd x \leq M(b-a)
+        \end{equation*}
+    \end{enumerate}
+    \item \textbf{Property 4 (First Mean Value Theorem):}
+    \par Suppose $f(x)$ is integrable on $[a,b]$ and $m \leq f(x) \leq M \ \forall \ x \in [a,b]$, then there exists $\mu$ such that:
+    \begin{equation*}
+        \int_a^b f(x) \dd x = \mu (b-a), \qquad m< \mu < M
+    \end{equation*}
+    If $f(x)$ is continuous on $[a,b]$ then there exists $c \in [a,b]$ such that:
+        \begin{equation*}
+        \int_a^b f(x) \dd x = f(c) (b-a)
+    \end{equation*}
+    \item \textbf{Property 5 (Second Mean Value Theorem):}
+    If we have these three conditions:
+    \begin{enumerate}
+        \item $f(x)$ and $f(x)g(x)$ are integrable on $[a,b]$
+        \item $m \leq f(x) \leq M \ \forall \ x \in [a,b]$
+        \item $g(x)$ does not change signs on $[a,b]$
+    \end{enumerate}
+    Then there exists $\mu$ such that:
+    \begin{equation*}
+        \int_a^b f(x)g(x) \dd x = \mu \int_a^b g(x) \dd x, \qquad m< \mu < M
+    \end{equation*}
+    If $f(x)$ is continuous on $[a,b]$ then there exists $c \in [a,b]$ such that:
+    \begin{equation*}
+        \int_a^b f(x)g(x) \dd x = f(c) \int_a^b g(x) \dd x
+    \end{equation*}
+\end{enumerate}
+\subsection{Integral Functions}
+Suppose $f(x)$ is an integrable function on $[a,b]$, then for all $x \in [a,b]$, $f$ is also integrable on $[a,x]$. We can then define the function $F(x) = \mathlarger{\int_a^x f(t) \dd t}$. We then have some very important foundational theorems:
+\begin{concept}
+    \begin{itemize}
+        \item If $f(x)$ is integrable on $[a,b]$ then $F(x)$ is continuous on $[a,b]$
+        \item If $f$ is continuous at $x_0 \in [a,b]$ then $F(x)$ is differentiable at $x_0$ and $$F'(x_0) = f(x_0)$$
+        \item If $f(x)$ is continuous on the closed interval $[a,b]$ and $F(x)$ is an integral of $f(x)$ then:
+        \begin{equation*}
+            \int_a^b f(x) \dd x = F(b) - F(a)
+        \end{equation*}
+    \end{itemize}
+\end{concept}
+\subsection{Ways to Calculate Definite Integrals}
+\begin{enumerate}
+    \item \textbf{Integration by parts:}
+    \par Suppose $u(x),v(x)$ are continuously differentiable functions on $[a,b]$. Then:
+    \[
+    \int_a^b u \, dv =  uv \Bigg|_a^b - \int_a^b v \, du
+    \]
+    \item \textbf{Change of variables:}
+    \begin{enumerate}
+        \item \textbf{Substitute $x = \varphi(t)$}
+        \par Consider $I = \mathlarger{\int_a^b f(x) \dd x}$ with $f(x)$ being continuous on $[a,b]$. Substitute $x = \varphi(t)$ with the following three conditions:
+        \begin{itemize}
+            \item $\varphi(t)$ is has a continuous derivative on $[a,b]$
+            \item $\varphi(a) = \alpha ; \ \varphi(b) = \beta$
+            \item When $t$ changes from $\alpha$ to $\beta$ in $[\alpha,\beta]$ then $x = \varphi(t)$ continuously changes from $a$ to $b$
+        \end{itemize}
+        Then we have the following formula:
+    \begin{equation*}
+        \int_a^b f(x) \dd x = \int_{\alpha}^{\beta}f[\varphi(t)]\varphi'(t) \dd t
+    \end{equation*}
+    \item \textbf{Substitute $t = \varphi(x)$} 
+    \par Suppose the integral we are trying to solve has the form $I = \mathlarger{\int_a^b f[\varphi(x)]\varphi'(x) \dd x}$, where $\varphi(x)$ is monotonic and is continuously differentiable on $[a,b]$. Then:
+    \begin{equation*}
+        \int_a^b f[\varphi(x)]\varphi'(x) \dd x = \int_{\varphi(a)}^{\varphi(b)}f(t) \dd t
+    \end{equation*}
+    \end{enumerate}
+    \item \textbf{Recursion or Induction}
+    \par We can look at an example. Calculate:
+    \begin{equation*}
+        I_n = \int_0^\frac{\pi}{2}\cos^n x \cos nx \dd x
+    \end{equation*}
+    We use integration by parts: Let $u = \cos^nx$ and $\dd v = \cos nx \dd x$. Then $v = \dfrac{1}{n}\sin nx$. Applying the integration by parts formula, we have:
+    \begin{align*}
+        I_n = & \dfrac{1}{n} \int_0^\frac{\pi}{2}\cos^n x \cos nx \dd x \\
+        = & \dfrac{1}{n} \cos ^n x \sin nx \Big|_0^{\frac{\pi}{2}} + \dfrac{1}{n}  \int_0^{\frac{\pi}{2}} n \cos ^{n-1} x \sin x \sin nx  \dd x \\
+        = &  \int_0^{\frac{\pi}{2}} \cos ^{n-1} x \sin x \sin nx  \dd x
+    \end{align*}
+    Then we see:
+    \begin{align*}
+        2I_n = & \int_0^\frac{\pi}{2}\cos^n x \cos nx \dd x + \int_0^{\frac{\pi}{2}} \cos ^{n-1} x \sin x \sin nx  \dd x \\
+        = & \int_0^\frac{\pi}{2} \cos^{n-1}x (\cos x \cos nx + \sin x \sin nx) \dd x \\
+        = & \int_0^\frac{\pi}{2} \cos^{n-1}x \cos(n-1)x \dd x \\
+        =& I_{n-1}
+    \end{align*}
+    It's easy to compute $I_0 = \dfrac{\pi}{2}$. Then this is a geometric series, and $I_n = \dfrac{\pi}{2^{n+1}}$.
+\end{enumerate}
+\subsection{Important Results}
+\begin{enumerate}
+    \item \textbf{The Fundamental Theorem of Calculus}
+    \begin{equation*}
+        \dfrac{\dd y}{\dd x}\int_a^x f(t) \dd t = f(x)
+    \end{equation*}
+    And more generally:
+    \begin{equation*}
+        \dfrac{\dd y}{\dd x}\int_a^{g(x)} f(t) \dd t = f(g(x))g'(x)
+    \end{equation*}  
+    \item \textbf{Riemann Sum}
+    \par Recall the formula from earlier:
+    \begin{equation*}
+        S_n = \sum_{i=0}^{n-1}f(\xi_i) \Delta x_i \qquad  \Delta x_i \in [x_i, x_{i+1}]
+    \end{equation*}
+    If we partition $[a,b]$ into $n$ subintervals with equal length using $a = x_0 < x_1 < \ldots < x_n = b$, where $x_i = a + (b-a)\dfrac{i}{n}$ then:
+    \begin{equation*}
+        S_n = \dfrac{b-a}{n} \sum_{i=0}^{n-1}f(\xi_i) \qquad  \xi_i \in [x_i, x_{i+1}]
+    \end{equation*}
+    If $f(x)$ is integrable on $[a,b]$ and choosing $\xi_i = x_i$, we have the left and right sums:
+    \begin{important}
+    \textbf{Choosing $\xi_i = x_i$ yields:}
+    \begin{equation*}
+        \lim_{n \rightarrow \infty} \dfrac{b-a}{n} \left[ \sum_{i=0}^{n-1}f\left(a+ \dfrac{b-a}{n}i \right)\right] = \int_a^b f(x) \dd x
+    \end{equation*}
+    \textbf{Choosing $\xi_i = x_{i+1}$ yields:}
+    \begin{equation*}
+        \lim_{n \rightarrow \infty} \dfrac{b-a}{n} \left[ \sum_{i=1}^{n}f\left(a+ \dfrac{b-a}{n}i \right)\right] = \int_a^b f(x) \dd x
+    \end{equation*}
+    \end{important}
+    \item \textbf{Integral Equalities}
+    \begin{itemize}
+        \item $\mathlarger{\int_a^b f(x) \dd x = \int_a^b f(a+b-x) \dd x}$
+        \item $\mathlarger{\int_0^{\frac{\pi}{2}}f(\sin x) \dd x = \int_0^{\frac{\pi}{2}}f(\cos x) \dd x}$
+        \item $\mathlarger{\int_{-a}^a \dfrac{f(x)}{1+b^x}\dd x = \int_0^a f(x) \dd x}$
+        \item $\mathlarger{\int_a^b x^m (a+b-x)^n \dd x  = \int_a^b x^n (a+b-x)^m \dd x}$
+    \end{itemize}
+    \item \textbf{Integral Inequalities}
+    \begin{important}
+        \textbf{Cauchy-Schwarz Inequality:}
+        \begin{equation*}
+            \left( \int_a^b f(x) g(x) \dd x \right)^2 \leq \left( \int_a^b f^2(x) \dd x \right)\left( \int_a^b g^2(x) \dd x \right)
+        \end{equation*}
+    \end{important}
+\end{enumerate}
+\section{Improper Integrals}
+\subsection{Improper Integrals with infinite endpoints}
+\par Suppose $f(x)$ is defined on the interval $[a,+\infty)$ and integrable on every closed intervals $[a,A]$, then:
+\begin{concept}
+    \textbf{Definition:} The limit of the integral $\mathlarger{\int_a^A f(x) \dd x}$ as $A \rightarrow +\infty$ is called an improper integral of the function $f(x)$ on $[a,+\infty)$ and is denoted by:
+    \begin{equation*}
+        \int_a^{+\infty} f(x) \dd x = \lim_{A \rightarrow \infty} \int_a^A f(x) \dd x
+    \end{equation*}
+\end{concept}
+If this limit exists then we say the improper integral \emph{converges}. Conversely, if it does not exist or it is at infinity, we say it \emph{diverges}. Analogously, we can define improper integrals from negative infinity to some value, and on the entire real line $\mathbb{R}$.
+\subsection{Improper Integrals of Unbounded functions}
+\par Suppose $f(x)$ is defined on $[a,b)$ and integrable on all intervals $[a,t]$ such that $t<b$ and $\mathlarger{\lim_{x \rightarrow b} = \infty}$. The point $x=b$ is called a singularity point of the function $f(x)$.
+\begin{concept}
+    \textbf{Definition:} The limit of the integral $\mathlarger{\int_a^t} f(x) \dd x$ as $t \rightarrow b^-$ is called an improper integral of the function $f(x)$ on the interval $[a,b)$ and is denoted by:
+    \begin{equation*}
+        \int_a^b f(x) \dd x = \lim_{t \rightarrow b^-}\int_a^t f(x) \dd x
+    \end{equation*}
+\end{concept}
+If this limit exists then we say the improper integral \emph{converges}. Conversely, if it does not exist or it is at infinity, we say it \emph{diverges}. Analogously, we can define improper integrals on $(a,b]$ and on $(a,b)$.
+\par As for integrals with two critical points $x=a$ and $x=b$, we can split:
+\begin{equation*}
+    \int_a^b f(x) \dd x = \int_a^c f(x) \dd x + \int_c^b f(x) \dd x
+\end{equation*}
+\subsection{Convergence Criteria}
+\textbf{Comparison criterium:}
+\begin{enumerate}
+    \item Given two functions $f(x)$ and $g(x)$ that are integrable on all finite intervals $[a,A]$ and:
+    \begin{equation*}
+        0 \leq f(x) \leq g(x)
+    \end{equation*}
+    Then:
+    \begin{enumerate}
+        \item If $\mathlarger{\int_a^{+ \infty}g(x) \dd x}$ converges then $\mathlarger{\int_a^{+ \infty}f(x) \dd x}$ converges.
+        \item If $\mathlarger{\int_a^{+ \infty}f(x) \dd x}$ diverges then $\mathlarger{\int_a^{+ \infty}g(x) \dd x}$ diverges.
+    \end{enumerate}
+    \item Suppose $f(x)$ and $g(x)$ are functions integrable on every finite intervals $[a,A]$ and $\mathlarger{\lim_{x \rightarrow + \infty}} \dfrac{f(x)}{g(x)} = k>0$. Then the integrals $\mathlarger{\int_a^{+\infty}f(x) \dd x}$ and $\mathlarger{\int_a^{+\infty}g(x) \dd x}$ either both converges or both diverges.
+\end{enumerate}
+\textbf{Corollaries:}
+\par Given $f(x)$ and $g(x)$ are two positive integrable functions on $[a,+\infty)$. Then:
+\begin{enumerate}
+    \item If $\mathlarger{\lim_{x \rightarrow + \infty} \dfrac{f(x)}{g(x)} = 0 }$ and $\mathlarger{\int_a^{+\infty}g(x) \dd x}$ converges then $\mathlarger{\int_a^{+\infty}f(x) \dd x}$ converges.
+    \item If $\mathlarger{\lim_{x \rightarrow + \infty} \dfrac{f(x)}{g(x)} = +\infty }$ and $\mathlarger{\int_a^{+\infty}g(x) \dd x}$ diverges then $\mathlarger{\int_a^{+\infty}f(x) \dd x}$ diverges.
+\end{enumerate}
+Analogously we also have similar criteria for functions with singularities. Also there are two things to keep in mind:
+\begin{important}
+    \begin{enumerate}
+        \item When determining the convergence of an improper integral, we only care about the rough behaviour of the function around abnormal points.
+        \item When using the comparison criteria, we often use that in conjunction with the $p$-test:
+        \begin{enumerate}
+            \item \begin{equation*}
+                \int_a^{+\infty} \dfrac{\dd x}{x^\alpha}
+            \end{equation*}
+            is convergent if $\alpha > 1$, and divergent if $\alpha \leq 1$.
+            \item \begin{equation*}
+                \int_a^b \dfrac{\dd x}{(x-a)^\alpha}
+            \end{equation*}
+            is convergent if $\alpha < 1$, and divergent if $\alpha \geq 1$.
+            \item \begin{equation*}
+                \int_a^b \dfrac{\dd x}{(b-x)^\alpha}
+            \end{equation*}
+            is convergent if $\alpha < 1$, and divergent if $\alpha \geq 1$.
+        \end{enumerate}
+    \end{enumerate}
+\end{important}
+\subsection{Convergence and Absolute Convergence}
+\begin{equation*}
+    \boxed{\int_0^1 \int_1^{\sqrt{y}}\dfrac{y}{x^5+1}\dd x \dd y}
+\end{equation*}
+
+
+\end{document}
