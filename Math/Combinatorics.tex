@@ -1,0 +1,69 @@
+\documentclass[12pt]{article}
+\input{preamble.tex}
+\begin{document}
+\title{Combinatorics}
+\author{Avid David}
+\date{\today}
+\maketitle
+\tableofcontents
+\newpage
+\part{Enumeration}
+Basically means counting. We are concerned with counting some number of objects that have some property. 
+\section{Basic Counting Techniques}
+\begin{itemize}
+    \item \textbf{Product Rule:} If an outcome consists of several independent stages, and there are $a$ ways to do the first stage, and $b$ ways to do the second, then there are $ab$ total outcomes.
+    \item \textbf{Sum Rule:}  If an outcome can result from one of several distinct cases, with $a$ ways for the first case and $b$ ways for the second, then there are $a+b$ outcomes.
+\end{itemize}
+We can apply this to a set with $n$ elements and try to count the number of subsets. Consider an arbitrary element $a$ Because each subset can either have $a$ or not (2 choices) then for all $n$ elements, the number of subsets is $2^n$.
+\section{Permutations, Combinations, and the Binomial Theorem}
+The number of permutations of $n$ objects is the number of $n$-tuples: ordering these objects. Then the first place when ordering has $n$ choices, the second has $n-1$, and so on, giving us $n!$ as the answer. But if we were to count the number of $r$-permutations of $n$ objects, or choosing $r$ from $n$ and ordering them, then the first place has $n$ choices, then $n-1$, all the way to $n-r+1$. Mathematically, this is $\dfrac{n!}{(n-r)!}$.
+\par But what is we don't want to order them? Then we will have to "erase" some "ordering factor". We know that the tuple has $r$ elements, so if we divide by $r!$, we'll achieve the number of sets of size $n$. This is precisely:
+\begin{equation*}
+    \binom{n}{r} = \dfrac{n!}{r!(n-r)!}
+\end{equation*}
+This is called the \textbf{binomial coefficient}. It arises in the expansion of $(a+b)^n$, which is the power of a binomial expression.
+\begin{equation*}
+    (a+b)^n = \sum_{r=0}^n \binom{n}{r} a^r b^{n-r}
+\end{equation*}
+Expressing polynomial multiplication as a power series is inherently combinatorial: we are looking for the powers that add up to some other power in the series. As for the binomial case, if we're looking at the power as the set of size $n$, then the coefficient of $a^r b^{n-r}$ is exactly the number of ways of choosing $r$ of the $n$ factors from which we take $a$. It naturally follows that the $b$ will come from the remaining $n-r$ factors. 
+\par Using the binomial theorem, we have a few interesting results:
+\begin{itemize}
+    \item Substituting $a=b=1$ gives:
+    \begin{equation*}
+        \sum_{r=0}^n \binom{n}{r} = 2^n
+    \end{equation*}
+    \item Substituting $a=1, \ b = -1$ gives:
+    \begin{equation*}
+        \sum_{r=0}^n \binom{n}{r}(-1)^r = 0
+    \end{equation*}
+    \item Differentiating $k$ times and substituting $a=1, \ b = -1$ gives:
+    \begin{equation*}
+        \sum_{r=0}^n \binom{n}{r}\dfrac{r!}{(r-k)!}(-1)^{r-k} = 0
+    \end{equation*}
+\end{itemize}
+\section{Bijections and Combinatorial Proofs}
+Given two sets $A$ and $B$. A function $f: A \rightarrow B$ is bijective if and only if it is invertible, that is, there exist $g: B \rightarrow A$ such that $f(g(x)) = x$. A combinatorial proof hinges on the fact that if there are a bijection between two sets, then they must be equal. Then, if we can count the solutions to a problem in two different ways, we can be confident that those two results are equal. A few important results are as follow:
+\begin{itemize}
+    \item \textbf{Using the formula, we have:}
+    \begin{equation*}
+        \binom{n}{k} \binom{k}{r} = \binom{n}{r}\binom{n-r}{k-r}
+    \end{equation*}
+    \begin{equation*}
+        \binom{n}{k} = \dfrac{n-k+1}{k} \binom{n}{k-1}
+    \end{equation*}
+    \item \textbf{Prove that} $$\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$$ \textbf{(Pascal's Identity)}
+    \par \textbf{Solution:} Consider a set $X$ with $n$ elements and an arbitrary element $a$. Now, when we choose $k$ elements from a set of $n$ items, there are two scenarios: either that set of $k$ contains $a$ or it does not. If it does contain $a$, then we can choose the remaining $k-1$ in the set of $n-1$ elements (excluding $a$). If it does not contain $a$, then we can choose $k$ from the set of $n-1$ (again, excluding $a$). This yields the RHS. Proof complete. 
+    \item \textbf{Splitting into telescoping sums yields the Hockey Stick Identity:}
+    \begin{equation*}
+        \binom{n+1}{k+1} = \sum_{r=k}^n \binom{r}{k}
+    \end{equation*}
+    \item \textbf{Prove that} $$\sum_{k=0}^{r}\binom{m}{k}\binom{n}{r-k} = \binom{m+n}{r}$$ \textbf{(Vandermonde's Identity)}
+    \par \textbf{Solution:} Consider two sets $A$ and $B$ with cardinality $m$ and $n$. Choosing $r$ elements from these two sets (RHS) is analogous to choosing $k$ from $A$ and choosing $r-k$ from $B$, summing over all possible $k$'s. This yields the LHS. Proof complete.
+    \item \textbf{How many ways are there to get to the point $(m,n)$ on the Cartesian coordinate from the origin by only going up 1 unit or to the right 1 unit?}
+    \par \textbf{Solution:} We see immediately that a valid path consists of $m+n$ steps: $m$ along the $x$ axis and $n$ along the $y$ axis. Then the number of valid paths is exactly $\binom{m+n}{m}$. The idea is simple: construct a binary string of length $m+n$. Denote going up as 1 and going sideways to the right as 0. Then the question turns into "How many such binary strings exist such that there are $m$ 1's and $n$ 0's?". The answer is the number of ways to put $m$ 1's in $m+n$ places.
+\end{itemize}
+
+
+
+
+\end{document}
