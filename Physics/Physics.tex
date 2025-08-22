@@ -1,0 +1,154 @@
+\documentclass[12pt]{article}
+\input{preamble.tex}
+\begin{document}
+\title{Physics Notes}
+\author{Avid David}
+\date{\today}
+\maketitle
+\tableofcontents
+\newpage
+\part{Mechanics}
+\section{Motion in One Dimension}
+The study of motion without external agents is called kinematics. There are three main types of motion: translational, rotational, and vibrational. For simplicity's sake, we are going to treat objects as particles: they have mass, but are infinitesimally small.
+\subsection*{Position, Velocity, and Speed}
+A particle's position is its location relative to a reference point. Its displacement is defined as the change in position in some time interval. As the particle moves from $x_1$ to $x_2$, its displacement is:
+\begin{equation}
+    \Delta x = x_2 - x_1
+\end{equation}
+\par The Greek character $\Delta$ (Delta) generally means \textit{difference}. We also have the concept of velocity, which is the change in position with respect to time. Mathematically, that is:
+\begin{equation}
+    v_{x,\text{avg}} = \dfrac{\Delta x}{\Delta t}
+\end{equation}
+\par This is the average velocity over a period of time. We can see that its sign depends on the displacement, because $t > 0$. But there's also speed, which depends on distance, so it's always positive:
+\begin{equation}
+    v_{\text{avg}} = \dfrac{d}{\Delta t}
+\end{equation}
+\begin{important}
+\begin{itemize}
+    \item Displacement is a vector quantity, but distance is a scalar quantity.
+    \item Velocity is a vector quantity, but speed is a scalar quantity.
+\end{itemize}
+
+\end{important}
+
+\subsection*{Instantaneous Velocity and Speed}
+This is where calculus jumps in. We take the limit as the intervals of time go to zero, and we acquire:
+\begin{equation}
+    v_x = \lim_{\Delta t \rightarrow 0} \dfrac{\Delta x}{\Delta t} = \diff{x}{t}
+\end{equation}
+\begin{concept}
+    \emph{The derivative of displacement with respect to time is velocity.}
+\end{concept}
+\subsection*{Analysis Models: The Particle Under Constant Velocity}
+We'll try to describe the particle. We know that the velocity is constant, so the only thing to find out here is its displacement. Luckily, this is simple. Rearranging (2) gives:
+\begin{equation}
+    x_2 = x_1 + v_x t
+\end{equation}
+These analysis models get tougher over time.
+\subsection*{Acceleration}
+Analogously, we define acceleration as the change in velocity over time. Then we have the equation of average acceleration:
+\begin{equation}
+    a_{x, \text{avg}} = \dfrac{\Delta v_x}{\Delta t}
+\end{equation}
+and similarly, the instantaneous acceleration:
+\begin{equation}
+    a_x = \lim_{\Delta t\rightarrow 0} \dfrac{\Delta v_x}{\Delta t} = \diff{v}{t}
+\end{equation}
+\begin{concept}
+    \emph{The derivative of velocity with respect to time is acceleration.}
+\end{concept}
+In 1D kinematics, if the velocity and acceleration are pointing in the same direction, then the object is speeding up and vice versa.
+\subsection*{The Particle Under Constant Acceleration}
+Let's tackle the most simple case. Because acceleration is the derivative of velocity, so if it's a constant, then the velocity changes linearly. We can write:
+\begin{equation}
+    v_{x_2} = v_{x_1} + a_x t 
+\end{equation}
+And if velocity is a linear function, then that means displacement will be a quadratic. Integrating both sides give:
+\begin{equation}
+    x_2 = x_1 + v_{x_1} t + \dfrac{1}{2}a_x t^2
+\end{equation}
+We can even extract velocity as a function of position. We know:
+\begin{equation*}
+    v_{x_2} = v_{x_1} + a_x t 
+\end{equation*}
+\begin{equation*}
+    x_2 = x_1 + \left( \dfrac{v_{x_1} + v_{x_2}}{2}\right) t
+\end{equation*}
+Substitute $t$ in gives:
+\begin{equation*}
+    x_2 - x_1 =  \dfrac{(v_{x_1} + v_{x_2})(v_{x_2} - v_{x_1})}{2a_x}
+\end{equation*}
+And we have the final form:
+\begin{equation*}
+    v_{x_2}^2 - v_{x_1}^2 = 2a_x d 
+\end{equation*}
+\begin{insight}
+We have 4 important equations:
+    \begin{enumerate}
+        \item $v_{x_2} = v_{x_1} + a_x t$
+        \item $x_2 = x_1 + \left( \dfrac{v_{x_1} + v_{x_2}}{2}\right) t$
+        \item $x_2 = x_1 + v_{x_1} t + \dfrac{1}{2}a_x t^2$
+        \item $v_{x_2}^2 - v_{x_1}^2 = 2a_x d$
+    \end{enumerate}
+\end{insight}
+\subsection*{Free Fall}
+In free fall, objects undergo constant acceleration $g \approx 9.8 \mathrm{m/s^2}$, and starting velocity $v_{x_1} = 0$. Then we have a series of equations:
+\begin{itemize}
+    \item $v = gt$
+    \item $t = \sqrt{\dfrac{2h}{g}}$
+    \item $v_{\text{final}} = \sqrt{2gh}$
+\end{itemize}
+\section{Vectors}
+Vectors are born because we need to study quantities that have both magnitude and direction. To describe them mathematically, we employ the use of coordinate systems.
+\subsection*{Coordinate Systems}
+In 2D, there are 2 main types of coordinate systems: The Cartesian system $(x,y)$ and the polar system $(r,\theta)$. It's worth knowing that $r = \sqrt{x^2 + y^2}$ and $\theta = \arctan{\dfrac{y}{x}}$.
+\subsection*{Vector and Scalar Quantities}
+It's all about if the quantities are directional or not.
+\begin{concept}
+\begin{itemize}
+    \item A \textbf{scalar quantity} is completely specified by a single value with an appropriate unit and has no direction.
+    \item A \textbf{vector quantity} is completely specified by a number and appropriate units plus a direction.
+\end{itemize}
+\end{concept}
+\par We denote a vector as boldface characters, like $\mathbf{A}$, or $\vec{a}$. Their magnitude is given by $|\mathbf{A}|$ or $|\vec{a}|$
+\subsection*{Some Properties of Vectors}
+They obey commutativity and associativity under addition. The negative of a vector $\mathbf{A}$ is $\mathbf{-A}$, and their sum is 0. The negative vector has the same magnitude, but it points in the opposite direction.
+\par Subtracting $\mathbf{A - B}$ is the same as $\mathbf{A + (-B)}$. When multiplying a vector by a scalar, only the magnitude changes. The direction stays the same.
+\subsection*{Components of a Vector and Unit Vectors}
+We can split a vector along the chosen axes. Writing $\mathbf{A} = \mathbf{A}_x + \mathbf{A}_y$ and $\mathbf{B} = \mathbf{B}_x + \mathbf{B}_y$, we can quickly calculate the resultant vector: $\mathbf{R} = (\mathbf{A+B})_x + (\mathbf{A+B})_y$. The resultant magnitude and direction are obtained similarly to how we convert from Cartesian to polar. 
+\par More commonly, we see people write unit vectors: 
+\begin{equation*}
+    \mathbf{A} = A_x\vec{\mathbf{i}} + A_y\vec{\mathbf{j}} + A_z \vec{\mathbf{k}}
+\end{equation*}
+\par They're essentially splitting the vectors into its components and making sure that the magnitude is 1.
+
+\section{Motion in Two Dimensions}
+\par Now that we have the tools for 2D kinematics, we can study motion in two dimensions by splitting the vectors of motion into their components along the $x$ and $y$ axes, therefore reducing the complexity back to 1D (in some sense).
+\subsection*{The Position, Velocity and Acceleration Vectors}
+\par Let's describe the position of a particle as a vector $\mathbf{\vec{r}}$, drawn from the origin to the particles position in the coordinate plane. Then we define the velocity vector $\mathbf{\vec{v}}$ and as per the formulae established earlier, we have:
+\begin{equation}
+    \vec{\mathbf{v}} = \dfrac{\Delta\vec{\mathbf{r}}}{\Delta t}
+\end{equation}
+Because time is a scalar quantity, we deduce that velocity is a vector quantity directed along $\Delta \mathbf{\vec{r}}$. 
+\begin{confusion}
+    Remember, the velocity is independent of the path taken, as it only takes into account the displacement between the final and initial position. The speed, however, is calculated by the total length of the path divided over time.
+\end{confusion}
+    Instantaneous velocity and acceleration is defined analogously, only this time we are dealing with vector-valued functions. 
+    \subsection*{Two-Dimensional Motion with Constant Acceleration}
+    Basically, we can split the vectors into its components, and work with each axis like in 1D kinematics. We write the position vector as:
+    \begin{equation}
+        \vec{\mathbf{r}} = x \vec{\mathbf{i}} + y \vec{\mathbf{j}}
+    \end{equation}
+    Taking the derivative gives:
+    \begin{equation}
+        \vec{\mathbf{v}} = \dfrac{\dd \vec{\mathbf{r}}}{\dd t} = \dfrac{\dd x}{\dd t} \vec{\mathbf{i}} + \dfrac{\dd y}{\dd t} \vec{\mathbf{j}} = v_x \vec{\mathbf{i}} + v_y \vec{\mathbf{j}}
+    \end{equation}
+    And then similarly we obtain the acceleration, and because it's constant, then the velocity is linear and the position depends on time quadratically. Nothing new.
+    \subsection*{Projectile Motion}
+    When a ball is thrown from the ground at an angle, it undergoes projectile motion. If we assume that there are no air resistance, then the only forces acting on the ball are the initial throw and gravity. Dissecting this motion into two axes, we can immediately see that in the horizontal axis, the ball is travelling at a constant speed: it was given a boost, then no drag. But in the vertical axis, it is under constant deceleration for the first half of its motion, and then constant aceleration after it has reached its apogee. We can describe this motion with an equation:
+    \begin{equation}
+        \bv{r_2} = \bv{r_1} + \bv{v_i}t + \dfrac{1}{2} \bv{g} t^2
+    \end{equation}
+    We can split $\bv{v_i}$ into $v_{x_i} = v_i \cos \theta$ and $v_{y_i} = v_i \sin \theta$. For the $x$ axis, that is enough. But for the $y$ axis, we have to factor in the constant acceleration too. Then, $v_y = v_{y_i} + gt$. To recap, we analysed the motion in 2D and split it into the superposition of two 1D motions. This is how to solve problems. Make stuff simpler.
+    \subsection*{The Particle in Uniform Circular Motion}
+\end{document}
