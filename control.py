@@ -2,6 +2,7 @@ import numpy as np
 
 LOOP_DELAY = 20
 
+
 def clamp(val, min_val, max_val):
     if val < min_val:
         return min_val
@@ -107,45 +108,140 @@ class PID:
         output = clamp(output, self.u_min, self.u_max)
 
         return output
-    
+
+
 class SquareWaveDisturbance:
-    def __init__(self, shot_rate=0.5, shot_duration=0.1, shot_torque=5.0, rng=None):
-        self.shot_rate = shot_rate        # avg shots per second
+    def __init__(self, shot_rate=0.5, shot_duration=0.1, shot_torque=5.0, bidirectional=False, rng=None):
+        self.shot_rate = shot_rate
         self.shot_duration = shot_duration
         self.shot_torque = shot_torque
+        self.bidirectional = bidirectional
         self.rng = rng if rng is not None else np.random.default_rng()
         self._timer = 0.0
+        self._sign = 1.0
 
     def update(self, dt):
         if self._timer <= 0.0 and self.rng.random() < self.shot_rate * dt:
             self._timer = self.shot_duration
+            self._sign = self.rng.choice([-1.0, 1.0]) if self.bidirectional else 1.0
 
         if self._timer > 0.0:
             self._timer -= dt
-            return self.shot_torque
+            return self._sign * self.shot_torque
         return 0.0
-    
+
+    @property
+    def active(self):
+        return self._timer > 0.0
+
+
 class HalfSineDisturbance:
-    def __init__(self, shot_rate=0.5, shot_duration=0.1, shot_torque=5.0, rng=None):
+    def __init__(self, shot_rate=0.5, shot_duration=0.1, shot_torque=5.0, bidirectional=False, rng=None):
         self.shot_rate = shot_rate
         self.shot_duration = shot_duration
         self.shot_torque = shot_torque
+        self.bidirectional = bidirectional
         self.rng = rng if rng is not None else np.random.default_rng()
         self._timer = 0.0
         self._elapsed = 0.0
+        self._sign = 1.0
 
     def update(self, dt):
         if self._timer <= 0.0 and self.rng.random() < self.shot_rate * dt:
             self._timer = self.shot_duration
             self._elapsed = 0.0
+            self._sign = self.rng.choice([-1.0, 1.0]) if self.bidirectional else 1.0
 
         if self._timer > 0.0:
             phase = np.pi * self._elapsed / self.shot_duration
-            torque = self.shot_torque * np.sin(phase)
+            torque = self._sign * self.shot_torque * np.sin(phase)
             self._timer -= dt
             self._elapsed += dt
             return torque
         return 0.0
 
+    @property
+    def active(self):
+        return self._timer > 0.0
 
 
+class TrapezoidalProfile:
+    def __init__(self, start_pos, end_pos, max_vel, max_accel):
+
+        # Initialize the trapezoidal motion profile parameters
+        self.start_pos = start_pos
+        self.end_pos = end_pos
+        self.max_vel = max_vel
+        self.max_accel = max_accel
+
+        self.distance = abs(end_pos - start_pos)
+        self.direction = 1 if end_pos > start_pos else -1
+
+        # Calculate the time to reach max velocity
+        self.t_accel = max_vel / max_accel
+        self.d_accel = 0.5 * max_accel * self.t_accel**2
+
+        # Triangle profile (never reaches max velocity)
+        if 2 * self.d_accel > self.distance:
+            self.t_accel = np.sqrt(self.distance / max_accel)
+            self.t_flat = 0
+            self.d_flat = 0
+            self.d_accel = 0.5 * max_accel * self.t_accel**2
+            self.max_vel = self.max_accel * self.t_accel
+
+        # Full trapezoidal profile
+        else:
+            self.d_flat = self.distance - 2 * self.d_accel
+            self.t_flat = self.d_flat / max_vel
+
+        # Total time for the motion
+        self.total_time = 2 * self.t_accel + self.t_flat
+
+    def position(self, t):
+        if t < 0:
+            return self.start_pos
+        elif t < self.t_accel:
+            # Acceleration phase
+            return self.start_pos + 0.5 * self.max_accel * t**2 * self.direction
+        elif t < (self.t_accel + self.t_flat):
+            # Constant velocity phase
+            return self.start_pos + (self.d_accel + (t - self.t_accel) * self.max_vel) * self.direction
+        elif t < (self.total_time):
+            # Deceleration phase
+            x_dec_start = self.start_pos + (self.d_accel + self.d_flat) * self.direction
+            t_dec = t - (self.t_accel + self.t_flat)
+            return x_dec_start + self.direction * (self.max_vel * t_dec - 0.5 * self.max_accel * t_dec**2)
+        else:
+            return self.end_pos
+
+    def velocity(self, t):
+        if t < 0:
+            return 0
+        elif t < self.t_accel:
+            # Acceleration phase
+            return self.max_accel * t * self.direction
+        elif t < (self.t_accel + self.t_flat):
+            # Constant velocity phase
+            return self.max_vel * self.direction
+        elif t < (self.total_time):
+            # Deceleration phase
+            t_dec = t - (self.t_accel + self.t_flat)
+            return (self.max_vel - self.max_accel * t_dec) * self.direction
+        else:
+            return 0
+
+    def acceleration(self, t):
+        if t < 0:
+            return 0
+
+        elif t < self.t_accel:
+            return self.max_accel * self.direction
+
+        elif t < self.t_accel + self.t_flat:
+            return 0
+
+        elif t <= self.total_time:
+            return -self.max_accel * self.direction
+
+        else:
+            return 0
