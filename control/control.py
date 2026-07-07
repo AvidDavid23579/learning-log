@@ -14,7 +14,7 @@ def clamp(val, min_val, max_val):
 
 class SlewLimiter:
     def __init__(self, dt, accel, decel):
-        self.dt = dt # Miliseconds
+        self.dt = dt  # Miliseconds
         self.accel = accel
         self.decel = decel
         self.prev_velocity = 0
@@ -31,6 +31,32 @@ class SlewLimiter:
 
         self.prev_velocity = self.prev_velocity + delta
         return self.prev_velocity
+
+
+class JerkLimitedSlew:
+    def __init__(self, dt, max_accel, max_decel, max_jerk):
+        self.dt = dt
+        self.max_accel = max_accel
+        self.max_decel = max_decel
+        self.max_jerk = max_jerk
+        self.velocity = 0
+        self.accel = 0
+
+    def update(self, target_velocity):
+        desired_accel = (target_velocity - self.velocity) / self.dt
+
+        sameDirection = target_velocity * self.velocity >= 0
+        increasingMagnitude = abs(target_velocity) > abs(self.velocity)
+        accel_limit = self.max_accel if sameDirection and increasingMagnitude else self.max_decel
+
+        desired_accel = clamp(desired_accel, -accel_limit, accel_limit)
+
+        max_delta_accel = self.max_jerk * self.dt
+        accel_delta = clamp(desired_accel - self.accel, -max_delta_accel, max_delta_accel)
+        self.accel += accel_delta
+
+        self.velocity += self.accel * self.dt
+        return self.velocity
 
 
 class BangBang:
@@ -246,6 +272,7 @@ class TrapezoidalProfile:
 
         else:
             return 0
+
 
 class ArmFeedforward:
     def __init__(self, mass, length, inertia, damping, gravity=9.81):
