@@ -13,7 +13,8 @@ def clamp(val, min_val, max_val):
 
 
 class SlewLimiter:
-    def __init__(self, accel, decel):
+    def __init__(self, dt, accel, decel):
+        self.dt = dt # Miliseconds
         self.accel = accel
         self.decel = decel
         self.prev_velocity = 0
@@ -26,7 +27,7 @@ class SlewLimiter:
 
         limit = self.accel if sameDirection and increasingMagnitude else self.decel
 
-        delta = clamp(delta, -limit * LOOP_DELAY / 1000, limit * LOOP_DELAY / 1000)
+        delta = clamp(delta, -limit * self.dt / 1000, limit * self.dt / 1000)
 
         self.prev_velocity = self.prev_velocity + delta
         return self.prev_velocity
