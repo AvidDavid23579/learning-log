@@ -355,7 +355,7 @@ class SCurveProfile:
         p0, v0, a0 = self.start_pos, 0.0, 0.0
 
         for dur, jrk in zip(durations, jerks):
-            segments.append({"t_start": t_start, "dur": dur, "p0": p0, "v0": v0, "a0": a0, "jrk": jrk})
+            segments.append({"t_start": t_start, "dur": dur, "p0": p0, "v0": v0, "a0": a0, "jerk": jrk})
             p0, v0, a0 = self.advance(p0, v0, a0, jrk, dur)
             t_start += dur
 
@@ -382,7 +382,7 @@ class SCurveProfile:
             return self.end_pos
         
         seg, tl = self.segment_at(t)
-        p, _, _ = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], seg["time"])
+        p, _, _ = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], tl)
 
         return p 
     
@@ -391,7 +391,7 @@ class SCurveProfile:
             return 0.0
         
         seg, tl = self.segment_at(t)
-        _, v, _ = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], seg["time"])
+        _, v, _ = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], tl)
 
         return v 
     
@@ -400,7 +400,7 @@ class SCurveProfile:
             return 0.0
         
         seg, tl = self.segment_at(t)
-        _, _, a = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], seg["time"])
+        _, _, a = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], tl)
 
         return a
 
