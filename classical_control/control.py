@@ -14,7 +14,7 @@ def clamp(val, min_val, max_val):
 
 class SlewLimiter:
     def __init__(self, dt, accel, decel):
-        self.dt = dt  # Miliseconds
+        self.dt = dt * 1000 # Miliseconds
         self.accel = accel
         self.decel = decel
         self.prev_velocity = 0
@@ -27,7 +27,7 @@ class SlewLimiter:
 
         limit = self.accel if sameDirection and increasingMagnitude else self.decel
 
-        delta = clamp(delta, -limit * self.dt / 1000, limit * self.dt / 1000)
+        delta = clamp(delta, -limit * self.dt, limit * self.dt)
 
         self.prev_velocity = self.prev_velocity + delta
         return self.prev_velocity
@@ -35,7 +35,7 @@ class SlewLimiter:
 
 class JerkLimitedSlew:
     def __init__(self, dt, max_accel, max_decel, max_jerk):
-        self.dt = dt
+        self.dt = dt * 1000
         self.max_accel = max_accel
         self.max_decel = max_decel
         self.max_jerk = max_jerk
@@ -74,7 +74,7 @@ class BangBang:
         elif error < -self.deadband:
             return self.u_min
         else:
-            return 0
+            return 0 
 
 
 class Hysteresis:
