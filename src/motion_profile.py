@@ -81,7 +81,8 @@ class TrapezoidalProfile:
 
         else:
             return 0
-        
+
+
 class SCurveProfile:
     def __init__(self, start_pos, end_pos, max_vel, max_accel, max_jerk):
         self.start_pos = start_pos
@@ -93,7 +94,7 @@ class SCurveProfile:
         self.distance = abs(end_pos - start_pos)
         self.direction = 1 if (end_pos > start_pos) else -1
 
-        j, a, v, d = max_jerk, max_accel, max_vel, self.distance 
+        j, a, v, d = max_jerk, max_accel, max_vel, self.distance
 
         if d == 0:
             self.tj = self.ta = self.t_cruise = 0.0
@@ -102,30 +103,30 @@ class SCurveProfile:
             self.total_time = 0.0
             self.segments = []
             return
-        
+
         tj_full = a / j
 
         if a * tj_full > v:
             tj = np.sqrt(v / j)
             ta = 0.0
-            self.a_peak = j * tj 
+            self.a_peak = j * tj
         else:
             tj = tj_full
             ta = v / a - tj
-            a_peak = a 
+            a_peak = a
 
         v_peak = v
         t_ramp = 2 * tj + ta
-        d_ramp = v_peak * t_ramp 
+        d_ramp = v_peak * t_ramp
 
         if d_ramp <= d:
             t_cruise = (d - d_ramp) / v_peak
 
-        # Never reaches max velocity    
-        else: 
+        # Never reaches max velocity
+        else:
             t_cruise = 0.0
             B = a * tj_full
-            v_candidate = (-B + np.sqrt(B^2 + 4 * a * d)) / 2
+            v_candidate = (-B + np.sqrt(B**2 + 4 * a * d)) / 2
 
             # Lower max velocity with quicker max acceleration phase
             if v_candidate >= a * tj_full:
@@ -139,18 +140,18 @@ class SCurveProfile:
                 v_peak = (d * np.sqrt(j) / 2) ** (2 / 3)
                 tj = np.sqrt(v_peak / j)
                 ta = 0.0
-                a_peak = j * tj 
+                a_peak = j * tj
 
         self.tj = tj
         self.ta = ta
         self.t_cruise = t_cruise
-        self.a_peak = a_peak # pyright: ignore[reportPossiblyUnboundVariable]
+        self.a_peak = a_peak  # pyright: ignore[reportPossiblyUnboundVariable]
         self.v_peak = v_peak
 
-        self.max_accel = a_peak # pyright: ignore[reportPossiblyUnboundVariable]
+        self.max_accel = a_peak  # pyright: ignore[reportPossiblyUnboundVariable]
         self.max_vel = v_peak
 
-        self.total_time = 4*tj + 2*ta + self.t_cruise
+        self.total_time = 4 * tj + 2 * ta + self.t_cruise
 
         self.build_segments()
 
@@ -174,48 +175,48 @@ class SCurveProfile:
     def advance(p0, v0, a0, jerk, t):
         a1 = a0 + jerk * t
         v1 = v0 + a0 * t + jerk * 0.5 * t**2
-        p1 = p0 + v0 * t + a0 * 0.5 * t**2 + jerk * (1/6) * t**3
-        return p1, v1, a1 
-    
+        p1 = p0 + v0 * t + a0 * 0.5 * t**2 + jerk * (1 / 6) * t**3
+        return p1, v1, a1
+
     def segment_at(self, t):
         for seg in self.segments:
             if t < seg["t_start"] + seg["dur"]:
                 return seg, t - seg["t_start"]
         last = self.segments[-1]
         return last, last["dur"]
-    
+
     def position(self, t):
         if t < 0 or self.total_time == 0:
             return self.start_pos
         if t >= self.total_time:
             return self.end_pos
-        
+
         seg, tl = self.segment_at(t)
         p, _, _ = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], tl)
 
-        return p 
-    
+        return p
+
     def velocity(self, t):
         if t < 0 or t >= self.total_time or self.total_time == 0:
             return 0.0
-        
+
         seg, tl = self.segment_at(t)
         _, v, _ = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], tl)
 
-        return v 
-    
+        return v
+
     def acceleration(self, t):
         if t < 0 or t >= self.total_time or self.total_time == 0:
             return 0.0
-        
+
         seg, tl = self.segment_at(t)
         _, _, a = self.advance(seg["p0"], seg["v0"], seg["a0"], seg["jerk"], tl)
 
         return a
 
     def jerk(self, t):
-         if t < 0 or t >= self.total_time or self.total_time == 0:
+        if t < 0 or t >= self.total_time or self.total_time == 0:
             return 0.0
-         
-         seg, _ = self.segment_at(t)
-         return seg["jerk"]
+
+        seg, _ = self.segment_at(t)
+        return seg["jerk"]
