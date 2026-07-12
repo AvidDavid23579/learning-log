@@ -1,4 +1,4 @@
-from common.utils import clamp
+from utils import clamp
 
 
 class BangBang:
