@@ -16,7 +16,7 @@ class BangBang:
         elif error < -self.deadband:
             return self.u_min
         else:
-            return 0 
+            return 0
 
 
 class Hysteresis:
@@ -63,14 +63,18 @@ class PID:
 
         error = self.setpoint - current_value
 
-        # Integral
-        self.integral += error * dt
-
         # de/dt = d(target)/dt - d(measurement)/dt
         raw_derivative = setpoint_velocity - current_velocity
 
         # EMA filter
         self.filtered_derivative = self.alpha * self.filtered_derivative + (1 - self.alpha) * raw_derivative
+
+        # Integral
+        unclamped_output = self.Kp * error + self.Ki * self.integral + self.Kd * self.filtered_derivative
+        saturated_high = unclamped_output > self.u_max
+        saturated_low = unclamped_output < self.u_min
+        if not ((saturated_high and error > 0) or (saturated_low and error < 0)):
+            self.integral += error * dt
 
         output = self.Kp * error + self.Ki * self.integral + self.Kd * self.filtered_derivative
 
