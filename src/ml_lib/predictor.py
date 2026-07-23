@@ -20,7 +20,3 @@ class LinearPredictor:
             y = self.model(x)
 
         return y.item()
-
-model = LinearPredictor()
-
-print(model.predict(0))
